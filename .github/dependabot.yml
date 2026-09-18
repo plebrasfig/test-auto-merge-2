@@ -3,7 +3,7 @@ updates:
   - package-ecosystem: npm
     directory: /
     schedule:
-      interval: daily
+      interval: daily # retrigger
     ignore:
       - dependency-name: "minimist"
         update-types:
