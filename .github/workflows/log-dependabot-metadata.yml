@@ -1,0 +1,26 @@
+name: Log dependabot metadata
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  log-metadata:
+    if: github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@21025c705c08248db411dc16f3619e6b5f9ea21a
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Dump all outputs
+        run: |
+          cat <<'JSON'
+          ${{ toJSON(steps.metadata.outputs) }}
+          JSON
