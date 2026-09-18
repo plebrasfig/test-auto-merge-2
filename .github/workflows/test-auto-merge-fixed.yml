@@ -1,0 +1,24 @@
+name: Test auto-merge (fixed condition)
+
+# GRAPHQL-3135 / GRAPHQL-3251 : reproduit fig-actions/graphql/auto-merge en
+# ajoutant dependency-group comme repli quand update-type est null, pour
+# valider en conditions reelles que l'auto-merge se declenche desormais sur
+# une PR de securite groupee.
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-merge:
+    if: github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/actions/auto-merge-fixed
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
